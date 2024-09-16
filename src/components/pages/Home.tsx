@@ -1,20 +1,56 @@
 import { useState } from "react";
 import Navbar from "../navbar/Navbar";
 import { supabase } from "../../config/supabase";
+import { useMutation } from "@tanstack/react-query";
+import queryClient from "../../config/queryclient";
 
+type TodoTypes = {
+  description: string;
+  id: number;
+};
 const Home = () => {
   const [board, setBoard] = useState(false);
-
-  const currentDate = new Date().toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-
+  const [todoData, setTodoData] = useState<TodoTypes[]>([]);
+  const [taskInfo, setTaskInfo] = useState("");
+  const currentDateTime = new Date().toISOString();
   const boardToggle = () => {
     setBoard((val) => !val);
   };
-  console.log(supabase);
+  // text area value
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTaskInfo(e.target.value);
+  };
+  // adding task
+  const addTask = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (taskInfo.trim()) {
+      const newTask = { description: taskInfo };
+      setTodoData((prev) => [...prev, { ...newTask, id: todoData.length + 1, created_at: currentDateTime }]);
+      mutation.mutate();
+      setTaskInfo("");
+    }
+  };
+  console.log(todoData);
+  // adding todos to supabase
+  const addTodoToSupabase = async () => {
+    const { data, error } = await supabase.from("todos").insert(todoData);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  };
+  // mutation
+  const mutation = useMutation({
+    mutationFn: addTodoToSupabase,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error: any) => {
+      console.error("Error adding todo:", error.message);
+    },
+  });
+
   return (
     <div>
       <Navbar />
@@ -32,11 +68,16 @@ const Home = () => {
         {/* board */}
 
         {board && (
-          <form className="w-full rounded-lg flex flex-col gap-3 shadow-custom-shadow p-3 mt-11">
+          <form
+            className="w-full rounded-lg flex flex-col gap-3 shadow-custom-shadow p-3 mt-11"
+            onSubmit={addTask}
+          >
             <h1 className="font-inter leading-6 text-light-grey">Task</h1>
             <textarea
               className="h-32 p-1 text-main-blue font-inter text-sm leading-5"
               placeholder="Write a task..."
+              value={taskInfo}
+              onChange={handleChange}
             ></textarea>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 font-inter text-sm">
@@ -58,7 +99,7 @@ const Home = () => {
                     stroke-width="0.4"
                   />
                 </svg>
-                <h2>{currentDate}</h2>
+                <h2>{currentDateTime}</h2>
               </div>
 
               <button

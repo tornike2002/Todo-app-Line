@@ -24,9 +24,14 @@ const Home = () => {
         {/* board */}
 
         {board && (
-          <div className="w-full rounded-lg flex flex-col gap-3 shadow-custom-shadow p-3 mt-11">
-            <h1>Task</h1>
-            <p className="h-32">Write a task...</p>
+          <form className="w-full rounded-lg flex flex-col gap-3 shadow-custom-shadow p-3 mt-11">
+            <h1 className="font-inter leading-6 text-light-grey">Task</h1>
+            <textarea
+              className="h-32 p-1 text-main-blue font-inter text-sm leading-5"
+              placeholder="Write a task..."
+              rows={1}
+              cols={3}
+            ></textarea>
             <div className="flex items-center justify-between">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,9 +51,14 @@ const Home = () => {
                   stroke-width="0.4"
                 />
               </svg>
-              <button className="font-inter text-main-blue font-medium leading-6">Add</button>
+              <button
+                type="submit"
+                className="font-inter text-main-blue font-medium leading-6"
+              >
+                Add
+              </button>
             </div>
-          </div>
+          </form>
         )}
       </section>
     </div>

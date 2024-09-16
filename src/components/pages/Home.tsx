@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../navbar/Navbar";
+import { supabase } from "../../config/supabase";
 
 const Home = () => {
   const [board, setBoard] = useState(false);
@@ -13,7 +14,7 @@ const Home = () => {
   const boardToggle = () => {
     setBoard((val) => !val);
   };
-
+  console.log(supabase);
   return (
     <div>
       <Navbar />

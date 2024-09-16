@@ -3,11 +3,10 @@ import Navbar from "../navbar/Navbar";
 import { supabase } from "../../config/supabase";
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "../../config/queryClient";
-
+import GetTodos from "../todos/GetTodos";
 
 type TodoTypes = {
   description: string;
-  id: number;
 };
 const Home = () => {
   const [board, setBoard] = useState(false);
@@ -26,12 +25,15 @@ const Home = () => {
     e.preventDefault();
     if (taskInfo.trim()) {
       const newTask = { description: taskInfo };
-      setTodoData((prev) => [...prev, { ...newTask, id: todoData.length + 1, created_at: currentDateTime }]);
+      setTodoData((prev) => [
+        ...prev,
+        { ...newTask, created_at: currentDateTime },
+      ]);
       mutation.mutate();
       setTaskInfo("");
     }
   };
-  // adding todos to supabase
+
   const addTodoToSupabase = async () => {
     const { data, error } = await supabase.from("todos").insert(todoData);
     if (error) {
@@ -111,6 +113,7 @@ const Home = () => {
             </div>
           </form>
         )}
+        <GetTodos />
       </section>
     </div>
   );

@@ -30,7 +30,6 @@ const Home = () => {
       setTaskInfo("");
     }
   };
-  console.log(todoData);
   // adding todos to supabase
   const addTodoToSupabase = async () => {
     const { data, error } = await supabase.from("todos").insert(todoData);

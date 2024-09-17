@@ -17,7 +17,7 @@ const SignIn = () => {
               cy="39.5"
               r="39.5"
               fill="#0500FF"
-              fill-opacity="0.45"
+              fillOpacity="0.45"
             />
           </svg>
           <h1 className="text-light-blue text-[32px] font-medium font-roboto">

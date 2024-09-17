@@ -9,6 +9,8 @@ export default {
       colors: {
         "main-blue": "#252931",
         "light-grey": "#5B606A",
+        "light-blue": "#0059AC",
+        "auth-placeholder": "#5F6571",
       },
       boxShadow: {
         "custom-shadow": "0px 1px 8px 0px rgba(0, 0, 0, 0.25)",

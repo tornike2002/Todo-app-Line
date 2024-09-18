@@ -1,11 +1,18 @@
 import { supabase } from "../../config/supabase";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
+
+import importantIcon from "../../assets/icons/star.svg";
+import completedIcon from "../../assets/icons/circle.svg";
+import editIcon from "../../assets/icons/edit.svg";
+import deleteicon from "../../assets/icons/delete.svg";
+import queryClient from "../../config/queryClient";
+
 const GetTodos = () => {
   const user = useUser();
   const [editMenu, setEditMenu] = useState(false);
-
+  const [newTitle, setNewTitle] = useState("");
   const editMenuHandler = () => {
     setEditMenu((val) => !val);
   };
@@ -21,7 +28,49 @@ const GetTodos = () => {
 
     return data;
   };
+  // delete to function
+  const deleteTodo = useMutation({
+    mutationFn: async (todoId: string) => {
+      const { error } = await supabase.from("todos").delete().eq("id", todoId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Error deleting todo:", error);
+    },
+  });
+  // edit todo function
+  const editTodo = useMutation({
+    mutationFn: async (todo: {
+      id: string;
+      newData: { description?: string; completed?: boolean };
+    }) => {
+      const { error } = await supabase
+        .from("todos")
+        .update(todo.newData)
+        .eq("id", todo.id);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Error updating todo:", error);
+    },
+  });
+  const editHandleClick = (todoId: string) => {
+    if (newTitle.trim() === "") {
+      alert("Title cannot be empty");
+      return;
+    }
 
+    editTodo.mutate({
+      id: todoId,
+      newData: { description: newTitle },
+    });
+  };
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["todos"],
     queryFn: fetchTodos,
@@ -43,6 +92,7 @@ const GetTodos = () => {
 
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
+  // edit delete complited and important functions
 
   return (
     <div className="flex flex-col gap-6 mt-7">
@@ -99,19 +149,41 @@ const GetTodos = () => {
                   />
                 </svg>
                 {editMenu && (
-                  <div className="bg-red-500 absolute top-6 right-0 rounded-lg">
-                    <ul className="px-4 py-2 ">
-                      <li>Importance</li>
-                      <li>Complete</li>
-                      <li>Edit</li>
-                      <li>Delete</li>
+                  <div className="bg-[#F6F6F7] absolute top-6 right-0 rounded-lg w-[155px] shadow-custom-shadow">
+                    <ul className="px-4 py-2 font-inter text-main-blue text-sm flex flex-col gap-2">
+                      <li className="flex items-center gap-2 cursor-pointer">
+                        <img src={importantIcon} alt={"icons"} /> Importance
+                      </li>
+                      <li className="flex items-center gap-2 cursor-pointer">
+                        <img src={completedIcon} alt={"icons"} /> Complete
+                      </li>
+                      <li
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => editHandleClick(todo.id)}
+                      >
+                        <img src={editIcon} alt={"icons"} /> Edit
+                      </li>
+                      <li
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => deleteTodo.mutate(todo.id)}
+                      >
+                        <img src={deleteicon} alt={"icons"} /> Delete
+                      </li>
                     </ul>
                   </div>
                 )}
               </div>
             </div>
 
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="New title"
+            />
             <p className="font-inter text-sm text-main-blue">
+              {editTodo.isError && <div>Error: {editTodo.error.message}</div>}
+              {editTodo.isSuccess && <div>Todo updated successfully!</div>}
               {todo.description}
             </p>
           </div>

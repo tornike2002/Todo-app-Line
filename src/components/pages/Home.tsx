@@ -16,7 +16,6 @@ const Home = () => {
   const [taskInfo, setTaskInfo] = useState("");
   const currentDateTime = new Date().toISOString();
   const user = useUser();
-  console.log(user.user?.id);
   const boardToggle = () => {
     setBoard((val) => !val);
   };

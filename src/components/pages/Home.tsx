@@ -4,15 +4,19 @@ import { supabase } from "../../config/supabase";
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "../../config/queryClient";
 import GetTodos from "../todos/GetTodos";
+import { useUser } from "@clerk/clerk-react";
 
 type TodoTypes = {
   description: string;
 };
+
 const Home = () => {
   const [board, setBoard] = useState(false);
   const [todoData, setTodoData] = useState<TodoTypes[]>([]);
   const [taskInfo, setTaskInfo] = useState("");
   const currentDateTime = new Date().toISOString();
+  const user = useUser();
+  console.log(user.user?.id);
   const boardToggle = () => {
     setBoard((val) => !val);
   };
@@ -27,7 +31,7 @@ const Home = () => {
       const newTask = { description: taskInfo };
       setTodoData((prev) => [
         ...prev,
-        { ...newTask, created_at: currentDateTime },
+        { ...newTask, created_at: currentDateTime, user_id: user.user?.id },
       ]);
       mutation.mutate();
       setTaskInfo("");

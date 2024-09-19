@@ -13,6 +13,7 @@ const GetTodos = () => {
   const user = useUser();
   const [editMenu, setEditMenu] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
   const editMenuHandler = () => {
     setEditMenu((val) => !val);
   };
@@ -42,6 +43,7 @@ const GetTodos = () => {
     },
   });
   // edit todo function
+
   const editTodo = useMutation({
     mutationFn: async (todo: {
       id: string;
@@ -54,12 +56,14 @@ const GetTodos = () => {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
+      setShowEdit((val) => !val)
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
     onError: (error) => {
       console.error("Error updating todo:", error);
     },
   });
+
   const editHandleClick = (todoId: string) => {
     if (newTitle.trim() === "") {
       alert("Title cannot be empty");
@@ -92,7 +96,6 @@ const GetTodos = () => {
 
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
-  // edit delete complited and important functions
 
   return (
     <div className="flex flex-col gap-6 mt-7">
@@ -159,7 +162,7 @@ const GetTodos = () => {
                       </li>
                       <li
                         className="flex items-center gap-2 cursor-pointer"
-                        onClick={() => editHandleClick(todo.id)}
+                        onClick={() => { setShowEdit((val) => !val); setEditMenu((value) => !value); }}
                       >
                         <img src={editIcon} alt={"icons"} /> Edit
                       </li>
@@ -174,16 +177,27 @@ const GetTodos = () => {
                 )}
               </div>
             </div>
+            {/* edit input */}
+            {showEdit && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  placeholder="Edit todo ..."
+                  className="font-inter text-sm text-main-blue px-2"
+                />
+                <button
+                  className="bg-white rounded-md px-2 font-inter text-sm text-main-blue"
+                  onClick={() => editHandleClick(todo.id)}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
 
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="New title"
-            />
             <p className="font-inter text-sm text-main-blue">
               {editTodo.isError && <div>Error: {editTodo.error.message}</div>}
-              {editTodo.isSuccess && <div>Todo updated successfully!</div>}
               {todo.description}
             </p>
           </div>

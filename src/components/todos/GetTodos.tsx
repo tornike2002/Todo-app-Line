@@ -14,12 +14,15 @@ const GetTodos = () => {
   const [editMenu, setEditMenu] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
   const [showEdit, setShowEdit] = useState<string | null>(null);
+
+  // opens by id
   const editMenuHandler = (todoId: string) => {
     setEditMenu(editMenu === todoId ? null : todoId);
   };
   const showEditHandler = (todoId: string) => {
     setShowEdit(showEdit === todoId ? null : todoId);
   };
+  
   const fetchTodos = async () => {
     const { data, error } = await supabase
       .from("todos")

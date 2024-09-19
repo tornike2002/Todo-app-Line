@@ -11,11 +11,18 @@ import queryClient from "../../config/queryClient";
 
 const GetTodos = () => {
   const user = useUser();
-  const [editMenu, setEditMenu] = useState(false);
+  const [editMenu, setEditMenu] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
-  const editMenuHandler = () => {
-    setEditMenu((val) => !val);
+  const [showEdit, setShowEdit] = useState<string | null>(null);
+
+  // opens by id
+  const editMenuHandler = (todoId: string) => {
+    setEditMenu(editMenu === todoId ? null : todoId);
   };
+  const showEditHandler = (todoId: string) => {
+    setShowEdit(showEdit === todoId ? null : todoId);
+  };
+  
   const fetchTodos = async () => {
     const { data, error } = await supabase
       .from("todos")
@@ -42,6 +49,7 @@ const GetTodos = () => {
     },
   });
   // edit todo function
+
   const editTodo = useMutation({
     mutationFn: async (todo: {
       id: string;
@@ -54,12 +62,15 @@ const GetTodos = () => {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
+      setShowEdit(null);
+      setNewTitle("")
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
     onError: (error) => {
       console.error("Error updating todo:", error);
     },
   });
+
   const editHandleClick = (todoId: string) => {
     if (newTitle.trim() === "") {
       alert("Title cannot be empty");
@@ -92,7 +103,6 @@ const GetTodos = () => {
 
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
-  // edit delete complited and important functions
 
   return (
     <div className="flex flex-col gap-6 mt-7">
@@ -102,7 +112,7 @@ const GetTodos = () => {
         return (
           <div
             key={todo.id}
-            className="w-full min-h-[242px] py-3 px-4 flex flex-col gap-4"
+            className="w-full min-h-[242px] py-3 px-4 flex flex-col gap-4 shadow-custom-shadow"
             style={{ backgroundColor: color }}
           >
             <div className="flex justify-between items-center">
@@ -132,23 +142,25 @@ const GetTodos = () => {
               </div>
               {/* three dot */}
               <div className="relative">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="4"
-                  height="16"
-                  viewBox="0 0 4 16"
-                  fill="none"
-                  className="cursor-pointer"
-                  onClick={editMenuHandler}
-                >
-                  <path
-                    d="M3.20208 12.7979C2.88327 12.4791 2.45087 12.3 2 12.3C1.54913 12.3 1.11673 12.4791 0.797918 12.7979C0.479106 13.1167 0.3 13.5491 0.3 14C0.3 14.4509 0.479106 14.8833 0.797918 15.2021C1.11673 15.5209 1.54913 15.7 2 15.7C2.45087 15.7 2.88327 15.5209 3.20208 15.2021C3.52089 14.8833 3.7 14.4509 3.7 14C3.7 13.5491 3.52089 13.1167 3.20208 12.7979ZM3.20208 6.79792C2.88327 6.47911 2.45087 6.3 2 6.3C1.54913 6.3 1.11673 6.47911 0.797918 6.79792C0.479106 7.11673 0.3 7.54913 0.3 8C0.3 8.45087 0.479106 8.88327 0.797918 9.20208C1.11673 9.52089 1.54913 9.7 2 9.7C2.45087 9.7 2.88327 9.52089 3.20208 9.20208C3.52089 8.88327 3.7 8.45087 3.7 8C3.7 7.54913 3.52089 7.11673 3.20208 6.79792ZM3.20208 0.797918C2.88327 0.479106 2.45087 0.3 2 0.3C1.54913 0.3 1.11673 0.479106 0.797918 0.797918C0.479106 1.11673 0.3 1.54913 0.3 2C0.3 2.45087 0.479106 2.88327 0.797918 3.20208C1.11673 3.52089 1.54913 3.7 2 3.7C2.45087 3.7 2.88327 3.52089 3.20208 3.20208C3.52089 2.88327 3.7 2.45087 3.7 2C3.7 1.54913 3.52089 1.11673 3.20208 0.797918Z"
-                    fill="black"
-                    stroke="black"
-                    strokeWidth="0.4"
-                  />
-                </svg>
-                {editMenu && (
+                <button onClick={() => editMenuHandler(todo.id)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="4"
+                    height="16"
+                    viewBox="0 0 4 16"
+                    fill="none"
+                    className="cursor-pointer"
+                  >
+                    <path
+                      d="M3.20208 12.7979C2.88327 12.4791 2.45087 12.3 2 12.3C1.54913 12.3 1.11673 12.4791 0.797918 12.7979C0.479106 13.1167 0.3 13.5491 0.3 14C0.3 14.4509 0.479106 14.8833 0.797918 15.2021C1.11673 15.5209 1.54913 15.7 2 15.7C2.45087 15.7 2.88327 15.5209 3.20208 15.2021C3.52089 14.8833 3.7 14.4509 3.7 14C3.7 13.5491 3.52089 13.1167 3.20208 12.7979ZM3.20208 6.79792C2.88327 6.47911 2.45087 6.3 2 6.3C1.54913 6.3 1.11673 6.47911 0.797918 6.79792C0.479106 7.11673 0.3 7.54913 0.3 8C0.3 8.45087 0.479106 8.88327 0.797918 9.20208C1.11673 9.52089 1.54913 9.7 2 9.7C2.45087 9.7 2.88327 9.52089 3.20208 9.20208C3.52089 8.88327 3.7 8.45087 3.7 8C3.7 7.54913 3.52089 7.11673 3.20208 6.79792ZM3.20208 0.797918C2.88327 0.479106 2.45087 0.3 2 0.3C1.54913 0.3 1.11673 0.479106 0.797918 0.797918C0.479106 1.11673 0.3 1.54913 0.3 2C0.3 2.45087 0.479106 2.88327 0.797918 3.20208C1.11673 3.52089 1.54913 3.7 2 3.7C2.45087 3.7 2.88327 3.52089 3.20208 3.20208C3.52089 2.88327 3.7 2.45087 3.7 2C3.7 1.54913 3.52089 1.11673 3.20208 0.797918Z"
+                      fill="black"
+                      stroke="black"
+                      strokeWidth="0.4"
+                    />
+                  </svg>
+                </button>
+
+                {editMenu === todo.id && (
                   <div className="bg-[#F6F6F7] absolute top-6 right-0 rounded-lg w-[155px] shadow-custom-shadow">
                     <ul className="px-4 py-2 font-inter text-main-blue text-sm flex flex-col gap-2">
                       <li className="flex items-center gap-2 cursor-pointer">
@@ -159,7 +171,10 @@ const GetTodos = () => {
                       </li>
                       <li
                         className="flex items-center gap-2 cursor-pointer"
-                        onClick={() => editHandleClick(todo.id)}
+                        onClick={() => {
+                          showEditHandler(todo.id);
+                          editMenuHandler(todo.id);
+                        }}
                       >
                         <img src={editIcon} alt={"icons"} /> Edit
                       </li>
@@ -174,16 +189,27 @@ const GetTodos = () => {
                 )}
               </div>
             </div>
+            {/* edit input */}
+            {showEdit === todo.id && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  placeholder="Edit todo ..."
+                  className="font-inter text-sm text-main-blue px-2"
+                />
+                <button
+                  className="bg-white rounded-md px-2 font-inter text-sm text-main-blue"
+                  onClick={() => editHandleClick(todo.id)}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
 
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="New title"
-            />
             <p className="font-inter text-sm text-main-blue">
               {editTodo.isError && <div>Error: {editTodo.error.message}</div>}
-              {editTodo.isSuccess && <div>Todo updated successfully!</div>}
               {todo.description}
             </p>
           </div>

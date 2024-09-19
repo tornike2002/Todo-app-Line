@@ -105,7 +105,7 @@ const GetTodos = () => {
         return (
           <div
             key={todo.id}
-            className="w-full min-h-[242px] py-3 px-4 flex flex-col gap-4"
+            className="w-full min-h-[242px] py-3 px-4 flex flex-col gap-4 shadow-custom-shadow"
             style={{ backgroundColor: color }}
           >
             <div className="flex justify-between items-center">

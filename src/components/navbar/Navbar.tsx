@@ -50,16 +50,23 @@ const Navbar = () => {
       </div>
       {/* drawer */}
       <Drawer
-        title="Basic Drawer"
         placement={"left"}
         closable={false}
         onClose={onClose}
         open={open}
         key={"left"}
       >
-        <Link to="/">Todos</Link>
-        <Link to="/">My Day</Link>
-        <Link to="/">Important</Link>
+        <div className="flex justify-between mb-5 font-inter">
+          <h1 className="text-lg font-light">Todo-app</h1>
+          <button type="button" onClick={onClose}>
+            X
+          </button>
+        </div>
+        <div className="flex flex-col gap-2 font-inter text-sm">
+          <Link to="/">Todos</Link>
+          <Link to="/my-day">My Day</Link>
+          <Link to="/important">Important</Link>
+        </div>
       </Drawer>
     </nav>
   );

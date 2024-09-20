@@ -1,6 +1,18 @@
 import { UserButton } from "@clerk/clerk-react";
-
+import { Button, Drawer, Radio, Space } from "antd";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <nav className="px-4 py-2 border-b border-b-[#C7CAD0]">
       <div className="flex items-center justify-between">
@@ -11,6 +23,7 @@ const Navbar = () => {
           viewBox="0 0 18 16"
           fill="none"
           className="cursor-pointer"
+          onClick={showDrawer}
         >
           <path
             d="M0 0H18V2H0V0ZM0 7H12V9H0V7ZM0 14H18V16H0V14Z"
@@ -35,6 +48,19 @@ const Navbar = () => {
           <UserButton />
         </div>
       </div>
+      {/* drawer */}
+      <Drawer
+        title="Basic Drawer"
+        placement={"left"}
+        closable={false}
+        onClose={onClose}
+        open={open}
+        key={"left"}
+      >
+        <Link to="/">Todos</Link>
+        <Link to="/">My Day</Link>
+        <Link to="/">Important</Link>
+      </Drawer>
     </nav>
   );
 };

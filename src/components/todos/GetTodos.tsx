@@ -2,18 +2,27 @@ import { supabase } from "../../config/supabase";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
-
+import { useInputStore } from "../../stores/inputStore";
 import importantIcon from "../../assets/icons/star.svg";
 import completedIcon from "../../assets/icons/circle.svg";
 import editIcon from "../../assets/icons/edit.svg";
 import deleteicon from "../../assets/icons/delete.svg";
 import queryClient from "../../config/queryClient";
 
+type TodoTypes = {
+  id: string;
+  description: string;
+  created_at: string;
+};
+
 const GetTodos = () => {
   const user = useUser();
   const [editMenu, setEditMenu] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
   const [showEdit, setShowEdit] = useState<string | null>(null);
+
+  // zustand store
+  const { inputValue } = useInputStore();
 
   // opens by id
   const editMenuHandler = (todoId: string) => {
@@ -22,7 +31,7 @@ const GetTodos = () => {
   const showEditHandler = (todoId: string) => {
     setShowEdit(showEdit === todoId ? null : todoId);
   };
-  
+
   const fetchTodos = async () => {
     const { data, error } = await supabase
       .from("todos")
@@ -35,6 +44,12 @@ const GetTodos = () => {
 
     return data;
   };
+  const filterTodosByInput = (todos: TodoTypes[]) => {
+    return todos.filter((todo) =>
+      todo.description.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
   // delete to function
   const deleteTodo = useMutation({
     mutationFn: async (todoId: string) => {
@@ -63,7 +78,7 @@ const GetTodos = () => {
     },
     onSuccess: () => {
       setShowEdit(null);
-      setNewTitle("")
+      setNewTitle("");
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
     onError: (error) => {
@@ -91,6 +106,8 @@ const GetTodos = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
 
+  const filteredTodos = filterTodosByInput(data || []);
+
   // Format the created_at date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -106,7 +123,7 @@ const GetTodos = () => {
 
   return (
     <div className="flex flex-col gap-6 mt-7">
-      {data?.map((todo, index) => {
+      {filteredTodos?.map((todo, index) => {
         const color = colors[index % colors.length];
 
         return (

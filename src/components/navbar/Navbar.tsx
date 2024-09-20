@@ -2,9 +2,12 @@ import { UserButton } from "@clerk/clerk-react";
 import { Drawer } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useInputStore } from "../../stores/inputStore";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const { inputValue, setInputValue } = useInputStore();
+
   const showInputHandler = () => {
     setShowInput((val) => !val);
   };
@@ -16,6 +19,9 @@ const Navbar = () => {
     setOpen(false);
   };
 
+  const handdleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
   return (
     <nav className="px-4 py-2 border-b border-b-[#C7CAD0]">
       <div className="flex items-center justify-between">
@@ -39,6 +45,8 @@ const Navbar = () => {
               type="search"
               className="font-inter text-sm max-w-[145px] shadow-custom-shadow border
              border-black rounded-md outline-none pl-2"
+              onChange={handdleInputValue}
+              value={inputValue}
             />
           )}
           <svg

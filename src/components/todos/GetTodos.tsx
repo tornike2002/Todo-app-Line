@@ -120,7 +120,8 @@ const GetTodos = () => {
 
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
-
+  // need complete
+  //need importance
   return (
     <div className="flex flex-col gap-6 mt-7">
       {filteredTodos?.map((todo, index) => {

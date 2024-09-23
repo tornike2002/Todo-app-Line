@@ -155,7 +155,7 @@ const GetTodos = () => {
   // need complete
 
   return (
-    <div className="flex flex-col gap-6 mt-7 justify-center items-center sm:flex-row flex-wrap">
+    <div className="flex flex-col gap-6 mt-7 justify-center items-center xl:justify-start sm:flex-row flex-wrap">
       {filteredTodos?.map((todo, index) => {
         const color = colors[index % colors.length];
 

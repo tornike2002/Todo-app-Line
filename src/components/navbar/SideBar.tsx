@@ -5,7 +5,7 @@ import { MdDone } from "react-icons/md";
 
 const SideBar = () => {
   return (
-    <section className="bg-[#7BA0E7] w-[290px] h-screen pt-16 px-6 hidden xl:block">
+    <section className="bg-[#7BA0E7] w-[290px] min-h-screen pt-16 px-6 hidden xl:block ">
       <div className="flex flex-col gap-2 font-inter text-sm text-white">
         <NavLink to="/" className="flex items-center gap-2 hover:text-blue-800">
           <CiSun className="w-[22px] h-[22px]" /> Todos

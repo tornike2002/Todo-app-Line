@@ -43,13 +43,14 @@ const Navbar = () => {
           />
         </svg>
         {showInput && (
-          <div className="ml-6 sm:flex sm:justify-center sm:items-center w-[80%]">
+          <div className="ml-6 sm:flex sm:justify-center sm:items-center xl:w-[420px]">
             <input
               type="search"
               className="font-inter text-sm w-[80%] sm:min-w-[100%] shadow-custom-shadow border
-               border-black rounded-md outline-none pl-2"
+               border-black rounded-md outline-none pl-2  md:mr-7 xl:mr-10"
               onChange={handdleInputValue}
               value={inputValue}
+              placeholder="Search for a task..."
             />
           </div>
         )}

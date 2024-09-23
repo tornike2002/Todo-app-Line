@@ -70,7 +70,7 @@ const Home = () => {
   return (
     <div className="flex">
       <SideBar />
-      <div className="xl:w-full">
+      <div className="w-full">
         <Navbar />
         {/* add task button */}
         <section className="px-4 mt-[32px]">

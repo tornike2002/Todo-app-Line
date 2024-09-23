@@ -60,30 +60,6 @@ const CompleteTodos = () => {
           ) : (
             <div>No completed todos found</div>
           )}
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
-          <div className="bg-green-300 py-3 px-4 min-h-[242px] w-[341px]">
-            <h2 className="h-[200px]">avoieee</h2>
-            <p>15/15/2202</p>
-          </div>
         </div>
       </div>
     </section>

@@ -25,11 +25,11 @@ const CompleteTodos = () => {
     return data;
   };
 
-  // React Query to fetch data
+  // query data
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["completedTodos"],
     queryFn: fetchCompletedTodos,
-    enabled: !!user.user?.id, // Ensure query is enabled only when the user is logged in
+    enabled: !!user.user?.id,
   });
 
   if (isLoading) return <div>Loading completed todos...</div>;

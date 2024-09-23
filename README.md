@@ -1,50 +1,48 @@
-# React + TypeScript + Vite
+# Todo App Line
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A advanced and intuitive Todo application built with React. This app allows users to manage their tasks efficiently, providing features to create, read, update, and delete todos.
 
-Currently, two official plugins are available:
+## LIVE
+Live: https://stellar-kheer-4bfc3b.netlify.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Create Todo**: Add new tasks easily.
+- **Read Todo**: View all your tasks in a clean interface.
+- **Update Todo**: Edit existing tasks as needed.
+- **Delete Todo**: Remove tasks that are no longer needed.
+- **Make it important Todo**: Add in important page as needed.
+- **Make it complete Todo**: Add in complete page as needed.
+- **Responsive Design**: Works seamlessly on various devices.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used
 
-- Configure the top-level `parserOptions` property like this:
+- **React**: Frontend framework for building the user interface.
+- **Supabase**: Used for data fetching and storage.
+- **Clerk**: Used for login/registration.
+- **React Query**: Used for CRUD operations.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Getting Started
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Prerequisites
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Make sure you have the following installed:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Node.js
+- npm (Node Package Manager)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/todo-app-line.git
+   cd todo-app-line
+2. ```sh
+   npm install
+3. ```sh
+   npm run dev
+4. ```sh
+   http://localhost:3000
+   
+Contact : butiashvilitornike18@gmail.com  

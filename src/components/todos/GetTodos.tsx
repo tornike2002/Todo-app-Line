@@ -86,6 +86,22 @@ const GetTodos = () => {
     },
   });
 
+  const completeTodo = useMutation({
+    mutationFn: async (todoId: string) => {
+      const { error } = await supabase
+        .from("todos")
+        .update({ complate: true })
+        .eq("id", todoId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Error completing todo:", error);
+    },
+  });
+
   const editHandleClick = (todoId: string) => {
     if (newTitle.trim() === "") {
       alert("Title cannot be empty");
@@ -121,22 +137,6 @@ const GetTodos = () => {
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
   // need complete
-
-  const completeTodo = useMutation({
-    mutationFn: async (todoId: string) => {
-      const { error } = await supabase
-        .from("todos")
-        .update({ complate: true })
-        .eq("id", todoId);
-      if (error) throw new Error(error.message);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
-    onError: (error) => {
-      console.error("Error completing todo:", error);
-    },
-  });
 
   return (
     <div className="flex flex-col gap-6 mt-7">

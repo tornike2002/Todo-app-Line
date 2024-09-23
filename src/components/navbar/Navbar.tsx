@@ -3,6 +3,9 @@ import { Drawer } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useInputStore } from "../../stores/inputStore";
+import { CiSun, CiStar } from "react-icons/ci";
+import { FaRegChartBar } from "react-icons/fa";
+import { MdDone } from "react-icons/md";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -82,10 +85,18 @@ const Navbar = () => {
           </button>
         </div>
         <div className="flex flex-col gap-2 font-inter text-sm">
-          <Link to="/">Todos</Link>
-          <Link to="/my-day">My Day</Link>
-          <Link to="/important">Important</Link>
-          <Link to="/complete">Complete</Link>
+          <Link to="/" className="flex items-center gap-2 hover:text-blue-800">
+            <CiSun /> Todos
+          </Link>
+          <Link to="/my-day" className="flex items-center gap-2 hover:text-blue-800">
+            <FaRegChartBar /> Charts
+          </Link>
+          <Link to="/important" className="flex items-center gap-2 hover:text-blue-800">
+            <CiStar /> Important
+          </Link>
+          <Link to="/complete" className="flex items-center gap-2 hover:text-blue-800">
+            <MdDone /> Complete
+          </Link>
         </div>
       </Drawer>
     </nav>

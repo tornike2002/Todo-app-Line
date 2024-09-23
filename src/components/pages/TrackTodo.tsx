@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../config/supabase";
 import { useUser } from "@clerk/clerk-react";
 import Navbar from "../navbar/Navbar";
+import ChartCounter from "../UI/ChartCounter";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -51,7 +52,15 @@ const TodoChart = () => {
   return (
     <section>
       <Navbar />
-      <Doughnut data={chartData} />
+      <div className="mx-4 mt-8 mb-8">
+        <div className="flex flex-wrap gap-2 ">
+          <ChartCounter title="Total" count={totalCount} />
+          <ChartCounter title="Important" count={importantCount} />
+          <ChartCounter title="Complete" count={completedCount} />
+        </div>
+        <h1 className="py-4 font-inter text-main-blue  font-medium">Task by Status</h1>
+        <Doughnut data={chartData} />
+      </div>
     </section>
   );
 };

@@ -14,7 +14,6 @@ const Home = () => {
   const [board, setBoard] = useState(false);
   const [todoData, setTodoData] = useState<TodoTypes[]>([]);
   const [taskInfo, setTaskInfo] = useState("");
-  const currentDateTime = new Date().toISOString();
   const user = useUser();
   const boardToggle = () => {
     setBoard((val) => !val);
@@ -55,7 +54,13 @@ const Home = () => {
       console.error("Error adding todo:", error.message);
     },
   });
-
+  const formatDate = (date: Date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+  const currentDateTime = formatDate(new Date());
   return (
     <div>
       <Navbar />

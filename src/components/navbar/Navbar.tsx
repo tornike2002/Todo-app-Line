@@ -27,14 +27,14 @@ const Navbar = () => {
   };
   return (
     <nav className="px-4 py-2 border-b border-b-[#C7CAD0]">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between xl:justify-end">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="18"
           height="16"
           viewBox="0 0 18 16"
           fill="none"
-          className="cursor-pointer flex-shrink-0"
+          className="cursor-pointer flex-shrink-0 xl:hidden"
           onClick={showDrawer}
         >
           <path
@@ -42,16 +42,19 @@ const Navbar = () => {
             fill="#252931"
           />
         </svg>
-        <div className="flex items-center gap-3">
-          {showInput && (
+        {showInput && (
+          <div className="ml-6 sm:flex sm:justify-center sm:items-center xl:w-[420px]">
             <input
               type="search"
-              className="font-inter text-sm max-w-[145px] shadow-custom-shadow border
-             border-black rounded-md outline-none pl-2"
+              className="font-inter text-sm w-[80%] sm:min-w-[100%] shadow-custom-shadow border
+               border-black rounded-md outline-none pl-2  md:mr-7 xl:mr-10"
               onChange={handdleInputValue}
               value={inputValue}
+              placeholder="Search for a task..."
             />
-          )}
+          </div>
+        )}
+        <div className="flex items-center gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16.993"
@@ -88,13 +91,22 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-2 hover:text-blue-800">
             <CiSun /> Todos
           </Link>
-          <Link to="/my-day" className="flex items-center gap-2 hover:text-blue-800">
+          <Link
+            to="/my-day"
+            className="flex items-center gap-2 hover:text-blue-800"
+          >
             <FaRegChartBar /> Charts
           </Link>
-          <Link to="/important" className="flex items-center gap-2 hover:text-blue-800">
+          <Link
+            to="/important"
+            className="flex items-center gap-2 hover:text-blue-800"
+          >
             <CiStar /> Important
           </Link>
-          <Link to="/complete" className="flex items-center gap-2 hover:text-blue-800">
+          <Link
+            to="/complete"
+            className="flex items-center gap-2 hover:text-blue-800"
+          >
             <MdDone /> Complete
           </Link>
         </div>

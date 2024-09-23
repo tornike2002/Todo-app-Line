@@ -5,6 +5,7 @@ import { supabase } from "../../config/supabase";
 import { useUser } from "@clerk/clerk-react";
 import Navbar from "../navbar/Navbar";
 import ChartCounter from "../UI/ChartCounter";
+import SideBar from "../navbar/SideBar";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -50,16 +51,28 @@ const TodoChart = () => {
   };
 
   return (
-    <section>
-      <Navbar />
-      <div className="mx-4 mt-8 mb-8">
-        <div className="flex flex-wrap gap-2 ">
-          <ChartCounter title="Total" count={totalCount} />
-          <ChartCounter title="Important" count={importantCount} />
-          <ChartCounter title="Complete" count={completedCount} />
+    <section className="flex">
+      <SideBar />
+      <div className="w-full">
+        <Navbar />
+        <div className="mx-4 mt-8 mb-8 flex flex-col gap-9">
+          <div className="flex flex-wrap gap-2 xl: justify-around">
+            <ChartCounter title="Total" count={totalCount} />
+            <ChartCounter title="Important" count={importantCount} />
+            <ChartCounter title="Complete" count={completedCount} />
+          </div>
+          <h1 className="py-4 font-inter text-main-blue  font-medium">
+            Task by Status
+          </h1>
+          <div className="max-w-[450px] w-full h-96 mx-auto ">
+            <Doughnut
+              data={chartData}
+              options={{
+                responsive: true,
+              }}
+            />
+          </div>
         </div>
-        <h1 className="py-4 font-inter text-main-blue  font-medium">Task by Status</h1>
-        <Doughnut data={chartData} />
       </div>
     </section>
   );

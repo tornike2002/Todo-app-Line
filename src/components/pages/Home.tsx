@@ -15,14 +15,10 @@ const Home = () => {
   const [board, setBoard] = useState(false);
   const [todoData, setTodoData] = useState<TodoTypes[]>([]);
   const [taskInfo, setTaskInfo] = useState("");
+  const currentDateTime = new Date().toISOString();
   const user = useUser();
 
-  const formatDate = (date: Date) => {
-    const isoDate = date.toISOString();
-    return isoDate;
-  };
-  const currentDateTime = formatDate(new Date());
-
+ 
   const boardToggle = () => {
     setBoard((val) => !val);
   };
@@ -35,11 +31,11 @@ const Home = () => {
     e.preventDefault();
     if (taskInfo.trim()) {
       const newTask = { description: taskInfo };
-      setTodoData((prev) => [
-        ...prev,
+      setTodoData(() => [
+       
         {
           ...newTask,
-          created_at: formatDate(new Date()),
+          created_at: currentDateTime,
           user_id: user.user?.id,
         },
       ]);

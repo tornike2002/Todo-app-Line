@@ -102,6 +102,22 @@ const GetTodos = () => {
     },
   });
 
+  const markTodoAsImportant = useMutation({
+    mutationFn: async (todoId: string) => {
+      const { error } = await supabase
+        .from("todos")
+        .update({ important: true })
+        .eq("id", todoId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Error marking todo as important:", error);
+    },
+  });
+
   const editHandleClick = (todoId: string) => {
     if (newTitle.trim() === "") {
       alert("Title cannot be empty");
@@ -197,7 +213,10 @@ const GetTodos = () => {
                 {editMenu === todo.id && (
                   <div className="bg-[#F6F6F7] absolute top-6 right-0 rounded-lg w-[155px] shadow-custom-shadow">
                     <ul className="px-4 py-2 font-inter text-main-blue text-sm flex flex-col gap-2">
-                      <li className="flex items-center gap-2 cursor-pointer">
+                      <li
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => markTodoAsImportant.mutate(todo.id)}
+                      >
                         <img src={importantIcon} alt={"icons"} /> Importance
                       </li>
                       <li

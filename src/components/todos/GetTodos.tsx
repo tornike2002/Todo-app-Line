@@ -155,14 +155,14 @@ const GetTodos = () => {
   // need complete
 
   return (
-    <div className="flex flex-col gap-6 mt-7">
+    <div className="flex flex-col gap-6 mt-7 justify-center items-center sm:flex-row flex-wrap">
       {filteredTodos?.map((todo, index) => {
         const color = colors[index % colors.length];
 
         return (
           <div
             key={todo.id}
-            className="w-full min-h-[242px] py-3 px-4 flex flex-col gap-4 shadow-custom-shadow"
+            className=" min-h-[242px] py-3 px-4 flex flex-col gap-4 shadow-custom-shadow w-[351px] max-w-full"
             style={{ backgroundColor: color }}
           >
             <div className="flex justify-between items-center">

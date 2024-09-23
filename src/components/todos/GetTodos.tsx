@@ -121,7 +121,23 @@ const GetTodos = () => {
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
   // need complete
-  //need importance
+
+  const completeTodo = useMutation({
+    mutationFn: async (todoId: string) => {
+      const { error } = await supabase
+        .from("todos")
+        .update({ complate: true })
+        .eq("id", todoId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Error completing todo:", error);
+    },
+  });
+
   return (
     <div className="flex flex-col gap-6 mt-7">
       {filteredTodos?.map((todo, index) => {
@@ -184,7 +200,10 @@ const GetTodos = () => {
                       <li className="flex items-center gap-2 cursor-pointer">
                         <img src={importantIcon} alt={"icons"} /> Importance
                       </li>
-                      <li className="flex items-center gap-2 cursor-pointer">
+                      <li
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => completeTodo.mutate(todo.id)}
+                      >
                         <img src={completedIcon} alt={"icons"} /> Complete
                       </li>
                       <li

@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
+import CompleteTodos from "./components/pages/CompleteTodos";
 import SignInPage from "./components/auth/SignInPage";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import React from "react";
@@ -19,6 +20,16 @@ function App() {
             <PrivateLayout>
               <SignedIn>
                 <Home />
+              </SignedIn>
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/complete"
+          element={
+            <PrivateLayout>
+              <SignedIn>
+                <CompleteTodos />
               </SignedIn>
             </PrivateLayout>
           }

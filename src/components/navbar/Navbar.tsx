@@ -85,6 +85,7 @@ const Navbar = () => {
           <Link to="/">Todos</Link>
           <Link to="/my-day">My Day</Link>
           <Link to="/important">Important</Link>
+          <Link to="/complete">Complete</Link>
         </div>
       </Drawer>
     </nav>

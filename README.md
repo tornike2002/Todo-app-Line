@@ -3,7 +3,7 @@
 A advanced and intuitive Todo application built with React. This app allows users to manage their tasks efficiently, providing features to create, read, update, and delete todos.
 
 ## LIVE
-Live: https://stellar-kheer-4bfc3b.netlify.app
+Live: todo-app-line.vercel.app
 
 ## Features
 

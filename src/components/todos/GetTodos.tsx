@@ -36,7 +36,9 @@ const GetTodos = () => {
     const { data, error } = await supabase
       .from("todos")
       .select("id, description, created_at")
-      .eq("user_id", user.user?.id);
+      .eq("user_id", user.user?.id)
+      .not("important", "is", true)
+      .not("complate", "is", true);
 
     if (error) {
       throw new Error(error.message);
@@ -93,6 +95,7 @@ const GetTodos = () => {
         .update({ complate: true })
         .eq("id", todoId);
       if (error) throw new Error(error.message);
+      console.log(`Todo ${todoId} marked as completed`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -118,7 +121,15 @@ const GetTodos = () => {
     },
   });
 
-  const editHandleClick = (todoId: string) => {
+  const editHandleClick = (todoId: string, description: string) => {
+    if (
+      newTitle.trim().toLocaleLowerCase() ===
+      description.trim().toLocaleLowerCase()
+    ) {
+      alert("No changes detected");
+      return;
+    }
+
     if (newTitle.trim() === "") {
       alert("Title cannot be empty");
       return;
@@ -129,17 +140,18 @@ const GetTodos = () => {
       newData: { description: newTitle },
     });
   };
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["todos"],
     queryFn: fetchTodos,
     enabled: !!user,
   });
 
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
 
   const filteredTodos = filterTodosByInput(data || []);
-
   // Format the created_at date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -152,7 +164,6 @@ const GetTodos = () => {
 
   // Colors array to alternate between
   const colors = ["#E3EBFC", "#FBF0E4", "#E4F6FC", "#FCE4E4"];
-  // need complete
 
   return (
     <div className="flex flex-col gap-6 mt-7 justify-center items-center xl:justify-start sm:flex-row flex-wrap">
@@ -257,7 +268,7 @@ const GetTodos = () => {
                 />
                 <button
                   className="bg-white rounded-md px-2 font-inter text-sm text-main-blue"
-                  onClick={() => editHandleClick(todo.id)}
+                  onClick={() => editHandleClick(todo.id, todo.description)}
                 >
                   Edit
                 </button>

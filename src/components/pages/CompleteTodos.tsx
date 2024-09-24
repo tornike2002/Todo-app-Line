@@ -40,7 +40,7 @@ const CompleteTodos = () => {
     queryFn: fetchCompletedTodos,
     enabled: !!user.user?.id,
   });
-
+// deleting todos in complate
   const deleteTodoMutation = useMutation<void, Error, TodoTypes>({
       mutationFn: async (todo: TodoTypes) => {
         const { error } = await supabase
@@ -52,10 +52,9 @@ const CompleteTodos = () => {
         if (error) {
           throw new Error(error.message);
         }
-        return; // Explicitly return void here
+        return;
       },
       onSuccess: () => {
-        // Refetch the todos list after deletion
         queryClient.invalidateQueries({ queryKey: ["completedTodos"] });
       },
     });

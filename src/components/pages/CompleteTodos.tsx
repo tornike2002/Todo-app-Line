@@ -9,7 +9,7 @@ interface TodoTypes {
   id: string;
   description: string;
   created_at: string;
-  complate: boolean;
+  isComplated: boolean;
 }
 
 const CompleteTodos = () => {
@@ -22,10 +22,10 @@ const CompleteTodos = () => {
     }
 
     const { data, error } = await supabase
-      .from("todos")
-      .select("id, description, created_at, complate")
+      .from("todo")
+      .select("id, description, created_at, isComplated")
       .eq("user_id", user.user?.id)
-      .eq("complate", true);
+      .eq("isComplated", true);
 
     if (error) {
       throw new Error(error.message);
@@ -44,7 +44,7 @@ const CompleteTodos = () => {
   const deleteTodoMutation = useMutation<void, Error, TodoTypes>({
       mutationFn: async (todo: TodoTypes) => {
         const { error } = await supabase
-          .from("todos")
+          .from("todo")
           .delete()
           .eq("id", todo.id)
           .eq("user_id", user.user?.id);

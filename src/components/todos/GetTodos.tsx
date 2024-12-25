@@ -34,11 +34,11 @@ const GetTodos = () => {
 
   const fetchTodos = async () => {
     const { data, error } = await supabase
-      .from("todos")
+      .from("todo")
       .select("id, description, created_at")
       .eq("user_id", user.user?.id)
-      .not("important", "is", true)
-      .not("complate", "is", true);
+      .not("isImportant", "is", true)
+      .not("isComplated", "is", true);
 
     if (error) {
       throw new Error(error.message);
@@ -55,11 +55,11 @@ const GetTodos = () => {
   // delete to function
   const deleteTodo = useMutation({
     mutationFn: async (todoId: string) => {
-      const { error } = await supabase.from("todos").delete().eq("id", todoId);
+      const { error } = await supabase.from("todo").delete().eq("id", todoId);
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
     onError: (error) => {
       console.error("Error deleting todo:", error);
@@ -70,10 +70,10 @@ const GetTodos = () => {
   const editTodo = useMutation({
     mutationFn: async (todo: {
       id: string;
-      newData: { description?: string; completed?: boolean };
+      newData: { description?: string; isComplated?: boolean };
     }) => {
       const { error } = await supabase
-        .from("todos")
+        .from("todo")
         .update(todo.newData)
         .eq("id", todo.id);
       if (error) throw new Error(error.message);
@@ -81,7 +81,7 @@ const GetTodos = () => {
     onSuccess: () => {
       setShowEdit(null);
       setNewTitle("");
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
     onError: (error) => {
       console.error("Error updating todo:", error);
@@ -91,14 +91,14 @@ const GetTodos = () => {
   const completeTodo = useMutation({
     mutationFn: async (todoId: string) => {
       const { error } = await supabase
-        .from("todos")
-        .update({ complate: true })
+        .from("todo")
+        .update({ isComplated: true })
         .eq("id", todoId);
       if (error) throw new Error(error.message);
       console.log(`Todo ${todoId} marked as completed`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
     onError: (error) => {
       console.error("Error completing todo:", error);
@@ -108,8 +108,8 @@ const GetTodos = () => {
   const markTodoAsImportant = useMutation({
     mutationFn: async (todoId: string) => {
       const { error } = await supabase
-        .from("todos")
-        .update({ important: true })
+        .from("todo")
+        .update({ isImportant: true })
         .eq("id", todoId);
       if (error) throw new Error(error.message);
     },
@@ -142,7 +142,7 @@ const GetTodos = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todo"],
     queryFn: fetchTodos,
     enabled: !!user,
   });

@@ -14,7 +14,7 @@ const TodoChart = () => {
 
   const fetchTodos = async () => {
     const { data, error } = await supabase
-      .from("todos")
+      .from("todo")
       .select("*")
       .eq("user_id", user.user?.id);
 
@@ -26,7 +26,7 @@ const TodoChart = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todo"],
     queryFn: fetchTodos,
     enabled: !!user,
   });

@@ -9,7 +9,7 @@ interface TodoTypes {
   id: string;
   description: string;
   created_at: string;
-  important: boolean;
+  isImportant: boolean;
 }
 
 const ImportantTodos = () => {
@@ -21,10 +21,10 @@ const ImportantTodos = () => {
     }
 
     const { data, error } = await supabase
-      .from("todos")
-      .select("id, description, created_at, important")
+      .from("todo")
+      .select("id, description, created_at, isImportant")
       .eq("user_id", user.user?.id)
-      .eq("important", true);
+      .eq("isImportant", true);
 
     if (error) {
       throw new Error(error.message);
@@ -44,7 +44,7 @@ const ImportantTodos = () => {
   const deleteImportantTodoMutation = useMutation<void, Error, TodoTypes>({
     mutationFn: async (todo: TodoTypes) => {
       const { error } = await supabase
-        .from("todos")
+        .from("todo")
         .delete()
         .eq("id", todo.id)
         .eq("user_id", user.user?.id);

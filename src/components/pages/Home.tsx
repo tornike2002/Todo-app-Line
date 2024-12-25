@@ -45,7 +45,7 @@ const Home = () => {
   };
 
   const addTodoToSupabase = async () => {
-    const { data, error } = await supabase.from("todos").insert(todoData);
+    const { data, error } = await supabase.from("todo").insert(todoData);
     if (error) {
       throw new Error(error.message);
     }
@@ -56,7 +56,7 @@ const Home = () => {
   const mutation = useMutation({
     mutationFn: addTodoToSupabase,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todo"] });
     },
     onError: (error: any) => {
       console.error("Error adding todo:", error.message);
